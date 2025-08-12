@@ -1,0 +1,77 @@
+# Node modules
+node_modules/
+**/node_modules
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime artifacts
+*.pid
+*.seed
+*.pid.lock
+*.tsbuildinfo
+*.cache/
+
+# Coverage directories
+coverage/
+.nyc_output/
+
+# TypeScript build output
+dist/
+build/
+
+# Temp files
+tmp/
+*.temp
+*.cache
+
+# Environment variable files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# Yarn files
+.yarn/*
+!.yarn/cache
+!.yarn/plugins
+!.yarn/releases
+!.yarn/patches
+!.yarn/sdks
+!.yarn/versions
+
+# Optional eslint cache
+.eslintcache
+
+# editor directories and config files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# OS files
+*.swp
+*~
+.idea/
+
+# Lock files (optional, if using lock file)
+# package-lock.json
+yarn.lock
+
+# Misc build outputs
+build/
+release/
+dist/
+dist-ssr/
+
+# GitHub Actions artifacts
+.github/.cache
+
+# Ignore Protobuf compiled outputs (if any)
+*.pb.go
