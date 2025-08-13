@@ -8,7 +8,7 @@ export function mapRecordToAdventure(record: AdventureRecord): Adventure {
   return {
     id: record.id,
     title: campos['Nombre'] ?? '',
-    firtsDate: campos['1ra Fecha del Evento'] ?? '',
+    firstDate: campos['1ra Fecha del Evento'] ?? '',
     secondDate: campos['2da Fecha del Evento'] ?? '',
     duration: campos['Estadía (días)'],
     location: campos['Ubicación'] ?? '',
@@ -33,10 +33,10 @@ export function mapRecordToAdventure(record: AdventureRecord): Adventure {
 export function upcomingAndSorted(adventures: Adventure[]) {
   const now = new Date();
   return adventures
-  .filter(adventure => new Date(adventure.firtsDate) >= now)
+  .filter(adventure => new Date(adventure.firstDate) >= now)
   .sort((a, b) => {
-    const da = new Date(a.firtsDate).getTime();
-    const db = new Date(b.firtsDate).getTime();
+    const da = new Date(a.firstDate).getTime();
+    const db = new Date(b.firstDate).getTime();
     if (da !== db) return da - db;
     const pa = a.riders / a.capacity;
     const pb = b.riders / b.capacity;

@@ -1,5 +1,5 @@
 // src/types/adventure.ts
-export type Difficulty = 'Muy Fácil' | 'IntermedioFácil' | 'Moderada' | 'Intermedia' | 'Difícil' | 'Muy Difícil' | 'Legendaria';
+export type Difficulty = 'Muy Fácil' | 'Fácil' | 'Moderada' | 'Intermedia' | 'Difícil' | 'Muy Difícil' | 'Legendaria';
 export type Category = 
   'Local' |
   'Nacional' |
@@ -10,7 +10,7 @@ export type Category =
 export interface Adventure {
   id: string;
   title: string;
-  firtsDate: string;
+  firstDate: string;
   secondDate?: string;
   duration: number;
   location: string;
