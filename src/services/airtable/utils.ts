@@ -1,0 +1,53 @@
+import { Adventure, Category, Difficulty } from "../../types/adventure";
+import { AdventureRecord } from "./consts";
+
+export function mapRecordToAdventure(record: AdventureRecord): Adventure {
+  const campos = record.fields;
+  const attachment = (campos['Foto de Portada']?.[0]) ?? {};
+
+  return {
+    id: record.id,
+    title: campos['Nombre'] ?? '',
+    firtsDate: campos['1ra Fecha del Evento'] ?? '',
+    secondDate: campos['2da Fecha del Evento'] ?? '',
+    duration: campos['Estadía (días)'],
+    location: campos['Ubicación'] ?? '',
+    short_description: campos['Descripción Corta'] ?? '',
+    long_description: campos['Descripción Larga'] ?? '',
+    image: {
+      thumbnail: attachment.thumbnails?.small?.url ?? '',
+      large: attachment.thumbnails?.large?.url ?? '',
+      full: attachment.url ?? ''
+    },
+    difficulty: (campos['Dificultad'] as Difficulty) ?? 'Intermedio',
+    price: campos['Costo']?.toString(),
+    alternativePrice: campos['Costo Alternativo']?.toString(),
+    currency: campos['Moneda']?.toString(),
+    category: (campos['NombreTipo']?.[0] as Category) ?? 'local',
+    capacity: parseInt(campos['Capacidad']?.toString() ?? '0', 10),
+    riders: parseInt(campos['Clientes inscritos']?.length?.toString() ?? '0', 10)
+  };
+}
+
+
+export function upcomingAndSorted(adventures: Adventure[]) {
+  const now = new Date();
+  return adventures
+  .filter(adventure => new Date(adventure.firtsDate) >= now)
+  .sort((a, b) => {
+    const da = new Date(a.firtsDate).getTime();
+    const db = new Date(b.firtsDate).getTime();
+    if (da !== db) return da - db;
+    const pa = a.riders / a.capacity;
+    const pb = b.riders / b.capacity;
+    return pb - pa;
+  });
+}
+
+export function buildDateFilter(from?: string, to?: string): string | undefined {
+  const parts = [];
+  if (from) parts.push(`{1ra Fecha del Evento} >= ${from}`);
+  if (to) parts.push(`{1ra Fecha del Evento} <= ${to}`);
+  if (!parts.length) return undefined;
+  return parts.length === 1 ? parts[0] : `AND(${parts.join(', ')})`;
+}

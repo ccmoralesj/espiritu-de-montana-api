@@ -1,22 +1,20 @@
 // src/server.ts
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-import pino from 'pino';
 import pinoHTTP from 'pino-http';
 import cron from 'node-cron';
+import logger from './utils/logger';
 
-// import reviewsRouter from './routes/reviews.route';
-// import syncReviewsJob from './jobs/sync.reviews';
+import reviewsRouter from './routes/reviews/route';
+import googleRouter from './routes/google/route';
+import adventureRouter from './routes/adventures/route';
+import oauthRouter from './routes/oauth/route';
+import { getConfig } from './config/env';
+// import syncReviewsJob from './jobs/syncReviews';
 
-dotenv.config();
-const PORT = process.env.PORT ?? 4000;
-const logger = pino({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug'
-});
 const app = express();
 
-const allowed = process.env.CORS_ORIGIN?.split(',') || [];
+const allowed = getConfig('CORS_ORIGIN')
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowed.includes(origin)) return callback(null, true);
@@ -32,7 +30,10 @@ app.use(pinoHTTP({ logger }));
 app.get('/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
 // API routes
-// app.use('/api/reviews', reviewsRouter);
+app.use(oauthRouter);
+app.use('/api/reviews', reviewsRouter);
+app.use('/api/google', googleRouter);
+app.use('/api/adventures', adventureRouter);
 
 // Schedule cron job: sincronización reviews cada día 1 de cada mes a las 00:00
 // cron.schedule('0 0 1 * *', () => {
@@ -43,6 +44,7 @@ app.get('/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 // });
 
 // Start servidor
+const PORT = getConfig('PORT')
 app.listen(PORT, () => logger.info(`Server corriendo en puerto ${PORT}`));
 
 export default app;

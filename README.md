@@ -41,7 +41,7 @@ Backend API para integrar Google Business Profile (Reviews) y Airtable, usando N
 3. Copiá el entorno de ejemplo:
 
    ```bash
-   cp .env.example .env
+   cp .env.example .env.development
    ```
 
 4. Editá `.env` y completá los valores:
@@ -128,20 +128,21 @@ MIT – hacé lo que quieras con este código. Todo bajo tu propio riesgo.
 ##  .env.example
 
 ```dotenv
-# Server config
+# APP
 PORT=4000
-CORS_ORIGIN=http://localhost:3000
-
-# Redis (cache)
+API_BASE_URL=http://localhost:4000
+NODE_ENV=development
 REDIS_URL=redis://localhost:6379
+CORS_ORIGIN=
 
-# Google Business Profile API (OAuth)
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REFRESH_TOKEN=your_google_refresh_token
-ACCOUNT_ID=your_account_id
-LOCATION_ID=your_location_id
+# AIRTABLE
+AIRTABLE_API_KEY=
+AIRTABLE_BASE_ID=
 
-# Airtable
-AIRTABLE_API_KEY=your_airtable_api_key
-AIRTABLE_BASE_ID=your_airtable_base_id
+# GOOGLE
+GOOGLE_ACCOUNT_ID=
+GOOGLE_LOCATION_ID=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
+GOOGLE_OAUTH_REDIRECT_URI=http://localhost:4000/oauth2callback
