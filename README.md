@@ -25,26 +25,26 @@ Backend API para integrar Google Business Profile (Reviews) y Airtable, usando N
 
 ##  Setup paso a paso
 
-1. Cloná este repositorio:
+1. Clona este repositorio:
 
    ```bash
    git clone https://github.com/tu-usuario/tu-repo.git
    cd tu-repo
   ```
 
-2. Instalá dependencias:
+2. Instala dependencias:
 
    ```bash
    npm install
    ```
 
-3. Copiá el entorno de ejemplo:
+3. Copia el entorno de ejemplo:
 
    ```bash
    cp .env.example .env.development
    ```
 
-4. Editá `.env` y completá los valores:
+4. Edita `.env` y completá los valores:
 
    ```env
    PORT=4000
@@ -59,7 +59,7 @@ Backend API para integrar Google Business Profile (Reviews) y Airtable, usando N
    AIRTABLE_BASE_ID=...
    ```
 
-5. Ejecutá el backend en modo desarrollo:
+5. Ejecuta el backend en modo desarrollo:
 
    ```bash
    npm run dev
@@ -102,7 +102,7 @@ README.md
 
 ---
 
-## Contributing
+## Contribuciones
 
 * Abrí un *issue* para cualquier error o sugerencia.
 * Generá un *branch* para cada feature o fix.
