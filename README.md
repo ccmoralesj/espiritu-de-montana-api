@@ -130,7 +130,6 @@ MIT – hacé lo que quieras con este código. Todo bajo tu propio riesgo.
 ```dotenv
 # APP
 PORT=4000
-API_BASE_URL=http://localhost:4000
 NODE_ENV=development
 REDIS_URL=redis://localhost:6379
 CORS_ORIGIN=

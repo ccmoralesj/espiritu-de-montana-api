@@ -9,7 +9,6 @@ export interface NameToType {
   // APP
   NODE_ENV: 'production' | 'development';
   PORT: number;
-  API_BASE_URL: string;
   REDIS_URL: string;
   CORS_ORIGIN: string[];
   // AIRTABLE
