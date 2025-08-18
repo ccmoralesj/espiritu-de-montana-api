@@ -11,9 +11,10 @@ export function mapRecordToAdventure(record: AdventureRecord): Adventure {
     firstDate: campos['1ra Fecha del Evento'] ?? '',
     secondDate: campos['2da Fecha del Evento'] ?? '',
     duration: campos['Estadía (días)'],
+    totalDistance: campos['Kilometraje Total'],
     location: campos['Ubicación'] ?? '',
-    short_description: campos['Descripción Corta'] ?? '',
-    long_description: campos['Descripción Larga'] ?? '',
+    shortDescription: campos['Descripción Corta'] ?? '',
+    longDescription: campos['Descripción Larga'] ?? '',
     image: {
       thumbnail: attachment.thumbnails?.small?.url ?? '',
       large: attachment.thumbnails?.large?.url ?? '',

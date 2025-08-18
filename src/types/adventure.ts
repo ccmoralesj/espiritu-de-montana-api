@@ -1,4 +1,4 @@
-// src/types/adventure.ts
+export type AdventureId = string | number | undefined;
 export type Difficulty = 'Muy Fácil' | 'Fácil' | 'Moderada' | 'Intermedia' | 'Difícil' | 'Muy Difícil' | 'Legendaria';
 export type Category = 
   'Local' |
@@ -13,9 +13,10 @@ export interface Adventure {
   firstDate: string;
   secondDate?: string;
   duration: number;
+  totalDistance: number;
   location: string;
-  short_description: string;
-  long_description: string;
+  shortDescription: string;
+  longDescription: string;
   image: {
     thumbnail: string;
     large: string;
