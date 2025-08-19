@@ -4,6 +4,7 @@
   "description": "Espiritu de Montana's Node.js + Express + TypeScript backend integrating Google Business Profile and Airtable",
   "main": "dist/server.js",
   "scripts": {
+    "postinstall": "node -v",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
@@ -38,7 +39,7 @@
     "typescript": "^5.3.3"
   },
   "engines": {
-    "node": "23"
+    "node": ">=23.0.0"
   },
   "license": "MIT"
 }
