@@ -1,9 +1,10 @@
 export const TABLE_NAMES = {
   GOOGLE_REVIEWS: 'GoogleReviews',
-  ADVENTURES: 'Aventuras Y Experiencias'
+  ADVENTURES: 'Aventuras Y Experiencias',
+  ITEMS_AVENTURAS: 'Ítems de Aventuras'
 }
 
-export interface AdventureRecord {
+export interface AirtableRecord {
   id: string;
   fields: { [key: string]: any };
 }

@@ -1,6 +1,7 @@
 import { airtableDB } from ".";
+import { IncludeItem } from "../../types/adventure";
 import logger from "../../utils/logger";
-import { AdventureRecord, FetchAdventureProps, TABLE_NAMES } from "./consts";
+import { AirtableRecord, FetchAdventureProps, TABLE_NAMES } from "./consts";
 import { buildDateFilter } from "./utils";
 
 export async function fetchAdventures({
@@ -8,12 +9,12 @@ export async function fetchAdventures({
   from = 'TODAY()',
   to,
 }: FetchAdventureProps = {}
-): Promise<AdventureRecord[]> {
+): Promise<AirtableRecord[]> {
   logger.debug({ view , from, to }, 'Fetching adventures with date filter');
   const formula = buildDateFilter(from, to);
 
   return new Promise((resolve, reject) => {
-    const all: AdventureRecord[] = [];
+    const all: AirtableRecord[] = [];
     airtableDB(TABLE_NAMES.ADVENTURES)
       .select({
         view,
@@ -31,7 +32,7 @@ export async function fetchAdventures({
 
 export async function fetchAdventureById(
   id: string
-): Promise<AdventureRecord | null> {
+): Promise<AirtableRecord | null> {
   logger.debug({ id }, `Fetching adventure by id`);
 
   const record = await airtableDB(TABLE_NAMES.ADVENTURES).find(id);
@@ -47,7 +48,7 @@ export async function fetchAdventureById(
 export async function fetchAdventureBySlug(
   slug: string,
   { view = "Grid view" }: { view?: string } = {}
-): Promise<AdventureRecord | null> {
+): Promise<AirtableRecord | null> {
   const normalized = slug.toLowerCase();
 
   logger.debug({ slug: normalized, view }, `Fetching adventure by slug`);
@@ -74,4 +75,25 @@ export async function fetchAdventureBySlug(
 
   const record = all[0];
   return { id: record.id, fields: record.fields };
+}
+
+export async function fetchAdventureItems(recordIds: string[]): Promise<AirtableRecord[]> {
+  if (!recordIds || recordIds.length === 0) return [];
+
+  // Construye el OR(RECORD_ID()='id1', RECORD_ID()='id2', ...)
+  const formula = `OR(${recordIds
+    .map((id) => `RECORD_ID()='${id}'`)
+    .join(",")})`;
+
+  const records = await airtableDB(TABLE_NAMES.ITEMS_AVENTURAS)
+    .select({
+      filterByFormula: formula,
+    })
+    .all();
+
+  // Retorna los fields + id
+  return records.map((record) => ({
+    id: record.id,
+    fields: record.fields,
+  }));
 }

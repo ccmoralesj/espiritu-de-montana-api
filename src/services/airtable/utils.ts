@@ -1,12 +1,22 @@
-import { Adventure, Category, Difficulty } from "../../types/adventure";
-import { AdventureRecord } from "./consts";
+import { Adventure, Category, Difficulty, IncludeItem } from "../../types/adventure";
+import { AirtableRecord } from "./consts";
 
-export function mapRecordToAdventure(record: AdventureRecord): Adventure {
+export function mapRecordToIncludeItem(record: AirtableRecord): IncludeItem {
   const campos = record.fields;
-  const attachment = (campos['Foto de Portada']?.[0]) ?? {};
 
   return {
     id: record.id,
+    name: campos['Nombre'],
+    reactItem: campos['Ítem']
+  };
+}
+
+export function mapRecordToAdventure(adventureRecord: AirtableRecord): Adventure {
+  const campos = adventureRecord.fields;
+  const attachment = (campos['Foto de Portada']?.[0]) ?? {};
+
+  return {
+    id: adventureRecord.id,
     title: campos['Nombre'] ?? '',
     firstDate: campos['1ra Fecha del Evento'] ?? '',
     secondDate: campos['2da Fecha del Evento'] ?? '',
@@ -26,7 +36,9 @@ export function mapRecordToAdventure(record: AdventureRecord): Adventure {
     currency: campos['Moneda']?.toString(),
     category: (campos['NombreTipo']?.[0] as Category) ?? 'local',
     capacity: parseInt(campos['Capacidad']?.toString() ?? '0', 10),
-    riders: parseInt(campos['Clientes inscritos']?.length?.toString() ?? '0', 10)
+    riders: parseInt(campos['Clientes inscritos']?.length?.toString() ?? '0', 10),
+    included: campos['Incluye'].map(mapRecordToIncludeItem),
+    notIncluded: campos['NO Incluye'].map(mapRecordToIncludeItem),
   };
 }
 

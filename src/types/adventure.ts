@@ -7,6 +7,12 @@ export type Category =
   'B2B' |
   'Tour';
 
+export interface IncludeItem {
+  id: string;
+  name: string;
+  reactItem: string;
+}
+
 export interface Adventure {
   id: string;
   title: string;
@@ -29,4 +35,6 @@ export interface Adventure {
   category: Category;
   capacity: number;
   riders: number;
+  included: IncludeItem[];
+  notIncluded: IncludeItem[];
 }
