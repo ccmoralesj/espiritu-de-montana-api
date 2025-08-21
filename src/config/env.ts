@@ -37,7 +37,7 @@ export function getConfig(name: string): string | string[] | number | boolean | 
     case 'PORT':
       return Number.parseInt(val ?? '4000', 10);
     case 'CORS_ORIGIN':
-      return val ? val.split(',') : [];
+      return val ? val.split(',').map(v => v.trim()) : [];
     default:
       return val || '';
     
