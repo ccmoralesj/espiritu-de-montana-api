@@ -49,8 +49,17 @@ router.get('/slug/resolve', async (req, res) => {
 
   const adventureRecord = await fetchAdventureBySlug(slug as string);
   if (!adventureRecord) return res.status(404).json({ error: 'Not found' });
-  const adventureMapped = await mapRecordToAdventure(adventureRecord)
-
+  const campos = adventureRecord.fields;
+  const included = await fetchAdventureItems(campos['Incluye']);
+  const notIncluded = await fetchAdventureItems(campos['NO Incluye']);
+  const adventureMapped = mapRecordToAdventure({
+    id: adventureRecord.id,
+    fields: {
+      ...adventureRecord.fields,
+      'Incluye': included,
+      'NO Incluye': notIncluded,
+    }
+  })
   res.json(adventureMapped);
 });
 

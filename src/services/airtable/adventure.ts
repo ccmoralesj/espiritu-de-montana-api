@@ -47,35 +47,40 @@ export async function fetchAdventureById(
 
 export async function fetchAdventureBySlug(
   slug: string,
-  { view = "Grid view" }: { view?: string } = {}
+  { view }: { view?: string } = {}
 ): Promise<AirtableRecord | null> {
-  const normalized = slug.toLowerCase();
+  if (!slug) return null;
+  const normalized = slug.toString().trim().toLowerCase();
 
-  logger.debug({ slug: normalized, view }, `Fetching adventure by slug`);
+  // arma la fórmula con JSON.stringify para escapar correctamente
+  const quoted = JSON.stringify(normalized);
+  const formula = `LOWER(TRIM({slug})) = ${quoted}`;
 
-  const all: any[] = [];
-  await airtableDB(TABLE_NAMES.ADVENTURES)
-    .select({
-      view,
-      filterByFormula: `LOWER({slug}) = "${normalized}"`,
-      maxRecords: 1,
-    })
-    .eachPage(
-      (records, fetchNextPage) => {
-        all.push(...records);
-        fetchNextPage();
-      },
-      err => { if (err) throw err; }
-    );
+  logger.debug({ slug: normalized, view, formula }, `Fetching adventure by slug`);
 
-  if (!all.length) {
-    logger.warn(`No record found matching slug "${normalized}"`);
-    return null;
+  try {
+    const records = await airtableDB(TABLE_NAMES.ADVENTURES)
+      .select({
+        // deja view opcional: si quieres buscar en toda la tabla no le pases view
+        ...(view ? { view } : {}),
+        filterByFormula: formula,
+        maxRecords: 1,
+      })
+      .firstPage();
+
+    if (!records || records.length === 0) {
+      logger.warn({ slug: normalized }, `No record found matching slug`);
+      return null;
+    }
+
+    const record = records[0];
+    return { id: record.id, fields: record.fields };
+  } catch (err) {
+    logger.error({ err, slug: normalized, formula }, "Error fetching adventure by slug");
+    throw err;
   }
-
-  const record = all[0];
-  return { id: record.id, fields: record.fields };
 }
+
 
 export async function fetchAdventureItems(recordIds: string[]): Promise<AirtableRecord[]> {
   if (!recordIds || recordIds.length === 0) return [];

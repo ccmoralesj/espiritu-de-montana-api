@@ -37,8 +37,8 @@ export function mapRecordToAdventure(adventureRecord: AirtableRecord): Adventure
     category: (campos['NombreTipo']?.[0] as Category) ?? 'local',
     capacity: parseInt(campos['Capacidad']?.toString() ?? '0', 10),
     riders: parseInt(campos['Clientes inscritos']?.length?.toString() ?? '0', 10),
-    included: campos['Incluye'].map(mapRecordToIncludeItem),
-    notIncluded: campos['NO Incluye'].map(mapRecordToIncludeItem),
+    included: campos['Incluye']?.map(mapRecordToIncludeItem)?? [],
+    notIncluded: campos['NO Incluye']?.map(mapRecordToIncludeItem)?? [],
   };
 }
 
